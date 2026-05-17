@@ -1,0 +1,28 @@
+name: Score & Build Page
+
+on:
+  workflow_run:
+    workflows: ["Update Fund Data"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  score-and-build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - run: python fund.py score run
+      - run: python fund.py page build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
