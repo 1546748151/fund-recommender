@@ -1,0 +1,50 @@
+# FundRecommender 配置文件
+
+# 数据
+data:
+  db_path: "./fund_data.db"
+  request_delay: 0.5  # akshare 请求间隔(秒)，避免限流
+
+# 打分权重 (总和为1)
+weights:
+  risk_adj: 0.45
+  performance: 0.35
+  fund_quality: 0.20
+
+risk_adj:
+  sharpe_ratio: 0.15
+  max_drawdown: 0.15
+  calmar_ratio: 0.15
+
+performance:
+  return_1y: 0.10
+  return_2y: 0.10
+  return_3y: 0.10
+  volatility: 0.05
+
+fund_quality:
+  fund_size: 0.05
+  fee_rate: 0.05
+  fund_age: 0.05
+  inst_ratio: 0.05
+
+# 基金类型 (akshare 中的名称映射)
+fund_types:
+  - 股票型
+  - 混合型
+  - 指数型
+  - 债券型
+  - 货币型
+
+# 页面
+page:
+  output_dir: "./output"
+  top_n: 50
+
+# 打分阈值
+score:
+  min_fund_age_years: 3  # 成立不足3年的基金降权
+  optimal_size_max: 50   # 规模最优上限(亿)
+  optimal_size_min: 1    # 规模最优下限(亿)
+  optimal_inst_min: 0.20 # 机构占比最优下限
+  optimal_inst_max: 0.60 # 机构占比最优上限
