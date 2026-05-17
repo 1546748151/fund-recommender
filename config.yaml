@@ -39,6 +39,7 @@ fund_types:
 page:
   output_dir: "./output"
   top_n: 50
+  od_template_dir: "D:/dev/open-design/.od/projects/4e53d8f3-4432-4ba0-a4e8-e2bb29af9f42"
 
 # 打分阈值
 score:
