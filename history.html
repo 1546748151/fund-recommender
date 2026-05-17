@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FundRecommender - 历史追踪</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root{--bg:#f5f5f7;--card:#fff;--text:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#aeaeb2;--border:#e5e5ea;--accent:#0071e3;--radius:14px;--shadow:0 1px 3px rgba(0,0,0,0.06);--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','PingFang SC',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.back-link{display:inline-block;padding:16px 0;color:var(--accent);text-decoration:none;font-size:14px}
+.card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.chart-box{height:360px}
+.footer{text-align:center;padding:32px 0 48px;border-top:1px solid var(--border);margin-top:16px}
+.footer p{font-size:12px;color:var(--text-tertiary);margin-bottom:4px}
+.footer .warning{color:var(--orange);font-weight:500}
+h2{font-size:22px;font-weight:700;margin-bottom:16px}
+</style>
+</head>
+<body>
+<div class="container">
+<a class="back-link" href="index.html">&larr; 返回排行榜</a>
+<h2>评分历史追踪</h2>
+<div class="card"><div class="chart-box" id="chartTrend"></div></div>
+<footer class="footer">
+<p class="warning">⚠️ 本工具仅提供基于历史数据的基金质量评分和排序，不构成任何投资建议。</p>
+</footer>
+</div>
+<script>
+fetch('data.json').then(r=>r.json()).then(data=>{
+  const chart=echarts.init(document.getElementById('chartTrend'));
+  const top5=data.scores.slice(0,5);
+  chart.setOption({title:{text:'Top5 基金评分趋势 (示例)',textStyle:{fontSize:14}},
+    tooltip:{trigger:'axis'},legend:{data:top5.map(f=>f.name),bottom:0},
+    xAxis:{type:'category',data:['T-4','T-3','T-2','T-1',data.date]},
+    yAxis:{type:'value',min:60,max:100},
+    series:top5.map((f,i)=>({name:f.name,type:'line',
+      data:[80+i,81+i,82+i,83+i,f.total_score].map(v=>Math.min(100,v)),smooth:true}))});
+});
+</script>
+</body>
+</html>
