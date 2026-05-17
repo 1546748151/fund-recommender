@@ -25,7 +25,7 @@ class DataCLI:
             try:
                 df = self._fetch_fund_rank(ft)
                 if df is not None and not df.empty:
-                    self._save_funds_from_df(df)
+                    self._save_funds_from_df(df, ft)
                     total += len(df)
                     logger.info(f"Saved {len(df)} funds for {ft}")
             except Exception as e:
@@ -42,17 +42,16 @@ class DataCLI:
             logger.warning(f"akshare fund_open_fund_rank_em failed for {fund_type}: {e}")
             return None
 
-    def _save_funds_from_df(self, df: pd.DataFrame):
+    def _save_funds_from_df(self, df: pd.DataFrame, fund_type: str):
         """将 akshare 返回的 DataFrame 转为标准格式并存入数据库"""
         funds_data = []
         for _, row in df.iterrows():
-            fund_type_raw = str(row.get("基金类型", ""))
             fund_data = {
                 "code": str(row.get("基金代码", "")),
-                "name": str(row.get("基金名称", "")),
-                "fund_type": self._normalize_fund_type(fund_type_raw),
-                "fund_size": safe_float(row.get("基金规模", 0)),
-                "fee_rate": 1.50,
+                "name": str(row.get("基金简称", "")),
+                "fund_type": fund_type,
+                "fund_size": 0.0,
+                "fee_rate": safe_float(str(row.get("手续费", "1.50")).replace("%", ""), 1.50),
                 "establish_date": "",
                 "inst_ratio": 0.0,
                 "manager_name": "",

@@ -7,12 +7,12 @@ from loguru import logger
 class FundDB:
     def __init__(self, db_path: str):
         self.db_path = db_path
+        self._conn = sqlite3.connect(self.db_path)
+        self._conn.row_factory = sqlite3.Row
         self._init_tables()
 
     def _get_conn(self):
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
-        return conn
+        return self._conn
 
     def _init_tables(self):
         with self._get_conn() as conn:
