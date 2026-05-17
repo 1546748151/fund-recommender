@@ -28,13 +28,12 @@ fund_quality:
   fund_age: 0.05
   inst_ratio: 0.05
 
-# 基金类型 (akshare 中的名称映射)
+# 基金类型 (akshare fund_open_fund_rank_em 支持的分类)
 fund_types:
   - 股票型
   - 混合型
   - 指数型
   - 债券型
-  - 货币型
 
 # 页面
 page:
