@@ -140,6 +140,8 @@ python fund.py page serve                     # 本地预览
 
 **技术选型**：纯 HTML/CSS/JS + ECharts，零运行时依赖。
 
+**设计源**：前端 UI 由 Open Design 驱动设计。OD 项目位于 `D:\dev\open-design\.od\projects\4e53d8f3\`，包含 `index.html`（排行榜）和 `detail.html`（详情页）两个设计稿。PageBuilder 读取 OD 设计稿作为 HTML 模板，提取 CSS 样式，注入动态数据和 JS 交互逻辑后输出最终页面。
+
 **页面结构**：
 
 **首页 (index.html)**
