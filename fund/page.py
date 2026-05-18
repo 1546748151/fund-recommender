@@ -97,9 +97,24 @@ window.addEventListener('resize',()=>{{['chartTypeAvg','chartRiskReturn','chartT
 </body>"""
         return html.replace('</body>', js_block)
 
+    def _inject_element_ids(self, html: str) -> str:
+        """给 OD 模板的静态元素注入 JS 需要的 id 属性"""
+        # 概览卡片容器
+        html = html.replace('<div class="stats">', '<div class="stats" id="topCards">')
+        # 筛选标签容器
+        html = html.replace('<div class="filters">', '<div class="filters" id="typeTabs">')
+        # 表格 body
+        html = html.replace('<tbody>', '<tbody id="tableBody">')
+        # 图表占位 div — 按顺序匹配
+        chart_ids = ['chartTypeAvg', 'chartRiskReturn', 'chartTypeDist']
+        for cid in chart_ids:
+            html = html.replace('<div class="chart-placeholder">', f'<div class="chart-placeholder" id="{cid}">', 1)
+        return html
+
     def _write_index_html(self, data: dict):
         html = self._load_od_template("index")
         html = self._inject_echarts_cdn(html)
+        html = self._inject_element_ids(html)
         html = self._inject_index_js(html, data)
         init_js = "<script>renderAll();initCharts();</script>\n</body>"
         html = html.replace('</body>', init_js)
@@ -109,6 +124,12 @@ window.addEventListener('resize',()=>{{['chartTypeAvg','chartRiskReturn','chartT
     def _write_detail_html(self):
         html = self._load_od_template("detail")
         html = self._inject_echarts_cdn(html)
+        # 注入 JS 需要的 id
+        html = html.replace('<div class="hero">', '<div class="hero" id="fundHero">')
+        html = html.replace('<p class="analysis-text">', '<p class="analysis-text" id="fundAnalysis">')
+        chart_ids_detail = ['chartRadar', 'chartHistory']
+        for cid in chart_ids_detail:
+            html = html.replace('<div class="chart-placeholder">', f'<div class="chart-placeholder" id="{cid}">', 1)
         js_block = """<script>
 const params=new URLSearchParams(window.location.search);
 const code=params.get('code');
