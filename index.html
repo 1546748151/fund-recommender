@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>FundRecommender</title><style>:root{--accent:#0071e3}</style><script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-</head><body><div class="container"><div id="topCards"></div><div id="typeTabs"></div><table><tbody id="tableBody"></tbody></table><div id="chartTypeAvg"></div><div id="chartRiskReturn"></div><div id="chartTypeDist"></div></div><script>const DATA = {"date": "2026-08-19T12:42:36.937750", "total_funds": 0, "scores": [], "by_type": {}, "fund_types": ["股票型", "混合型", "指数型", "债券型"]};</script>
+</head><body><div class="container"><div id="topCards"></div><div id="typeTabs"></div><table><tbody id="tableBody"></tbody></table><div id="chartTypeAvg"></div><div id="chartRiskReturn"></div><div id="chartTypeDist"></div></div><script>const DATA = {"date": "2026-08-20T12:43:24.772183", "total_funds": 0, "scores": [], "by_type": {}, "fund_types": ["股票型", "混合型", "指数型", "债券型"]};</script>
 <script>
 let currentType='ALL';let currentSort={field:'total_score',asc:false};
 function getFunds(){let funds=DATA.scores;if(currentType!=='ALL'){funds=funds.filter(f=>f.fund_type===currentType);}funds=[...funds].sort((a,b)=>{const av=a[currentSort.field]||0;const bv=b[currentSort.field]||0;return currentSort.asc?av-bv:bv-av;});return funds;}
